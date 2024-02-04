@@ -57,14 +57,13 @@ class LocationController extends Controller
             'description_translation' => 'required',
         ]);
 
-        $validatedData['menu_available'] = implode(',', $request->menu_available);
+        $validatedData['menu_available'] = $request->menu_available ? implode(',', $request->menu_available) : "";
         $image = $request->file('image');
         $imageName = time() . '.' . $image->getClientOriginalExtension();
         $image->storeAs('public/location-images', $imageName);
         $validatedData['image'] = 'location-images/' . $imageName;
-
+        // dd($validatedData);
         $location = location::create($validatedData);
-
         $locationID = LocationTranslation::create([
             'locations_id' => $id,
             'language' => 'id',
@@ -123,7 +122,7 @@ class LocationController extends Controller
             'description_translation' => 'required',
         ]);
 
-        $validatedData['menu_available'] = implode(',', $request->menu_available);
+        $validatedData['menu_available'] = $request->menu_available ? implode(',', $request->menu_available) : '';
         $location = Location::findOrFail($id);
         if ($request->file('image')) {
             if ($request->file('image')) {
